@@ -16,13 +16,17 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install --save expo@54.0.21
 
-      - name: Build APK with EAS
-        run: npx expo export && npx expo prebuild && npx eas build -p android --local --output ./app.apk
+      - name: Prebuild and build APK
+        run: |
+          npx expo prebuild
+          npx eas build -p android --local --output ./app.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
