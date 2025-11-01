@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '18'
       - name: Install Android SDK
-        uses: reactivecircus/android-emulator-runner@v3
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
           target: default
