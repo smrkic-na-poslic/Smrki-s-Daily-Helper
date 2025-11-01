@@ -1,34 +1,31 @@
-name: Build Android APK
+name: Build Expo APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          distribution: temurin
-          java-version: 17
+          node-version: 18
 
-      - name: Grant execute permission for Gradlew
-        run: chmod +x gradlew
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build APK
-        run: ./gradlew assembleDebug
+      - name: Build APK with EAS
+        run: npx expo export && npx expo prebuild && npx eas build -p android --local --output ./app.apk
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: smrki-apk
+          path: app.apk
